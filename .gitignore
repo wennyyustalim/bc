@@ -1,0 +1,4 @@
+.vscode/
+bin/
+testcases/out/
+testcases/in/
