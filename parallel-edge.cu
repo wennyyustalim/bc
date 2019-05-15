@@ -213,7 +213,7 @@ int main(int argc, char *argv[]) {
     maxBetweenness = max(maxBetweenness, bwCentrality[i]);
   }
 
-  printf("%s, %s,", argv[1], argv[3]);
+  printf("%s, %03d, ", argv[1], atoi(argv[3]));
   // printf("%0.2lf, ", maxBetweenness);
   printf("%0.2lf\n", device_time_taken);
 
