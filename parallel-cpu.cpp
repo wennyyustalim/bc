@@ -13,7 +13,7 @@ void printTime(float ms) {
   printf("Time Taken in milliseconds : %d\n", (int)ms);
 }
 
-double *betweennessCentrality(Graph *graph) {
+double *betweennessCentrality(Graph *graph, int nodeFrom, int nodeTo) {
   const int nodeCount = graph->getNodeCount();
   const int edgeCount = graph->getEdgeCount();
 
@@ -44,7 +44,7 @@ double *betweennessCentrality(Graph *graph) {
     }
 
     #pragma omp for schedule(dynamic, 4)
-    for (int s = 0; s < nodeCount; s++) {
+    for (int s = nodeFrom; s <= nodeTo; s++) {
       for (int i = 0; i < nodeCount; ++i) {
         predecessor[i].clear();
       }
@@ -103,12 +103,15 @@ double *betweennessCentrality(Graph *graph) {
 }
 
 int main(int argc, char *argv[]) {
-  if (argc < 2) {
-    cout << "Usage: " << argv[0] << " <graph_input_file> [output_file]\n";
+  if (argc < 3) {
+    cout << "Usage: " << argv[0] << " <input_file> <output_file> <node_from> <node_to>\n";
     return 0;
   }
 
   freopen(argv[1], "r", stdin);
+
+  const int nodeFrom = atoi(argv[3]);
+  const int nodeTo = atoi(argv[4]);
 
   Graph *graph = new Graph();
   graph->readGraph();
@@ -122,7 +125,7 @@ int main(int argc, char *argv[]) {
   start = clock();
   wstart = omp_get_wtime();
 
-  double *bwCentrality = betweennessCentrality(graph);
+  double *bwCentrality = betweennessCentrality(graph, nodeFrom, nodeTo);
 
   end = clock();
   wend = omp_get_wtime();

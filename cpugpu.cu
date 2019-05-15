@@ -265,7 +265,7 @@ float *betweennessCentrality(Graph *graph, int nodeCount, int nodeFrom, int node
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
-        cout << "Usage: " << argv[0] << " <graph_input_file> [output_file]\n";
+        cout << "Usage: " << argv[0] << " <input_file> <output_file>\n";
         return 0;
     }
 
