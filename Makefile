@@ -14,7 +14,7 @@ generator: tc_generator.cpp
 	g++ tc_generator.cpp -o bin/tc_generator -std=c++11
 
 parallelcpu: parallel-cpu.cpp
-	g++ -o bin/parallel-cpu parallel-cpu.cpp -std=c++11 -O2 -Xcompiler -fopenmp
+	g++ -o bin/parallel-cpu parallel-cpu.cpp -std=c++11 -O2 -fopenmp
 
 test: test.cpp
 	g++ -o bin/test test.cpp -std=c++11 -O2 -fopenmp
