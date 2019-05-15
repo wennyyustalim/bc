@@ -142,7 +142,9 @@ int main(int argc, char *argv[]) {
   }
 
   printf("%s, %s, ", argv[1], argv[3]);
-  printf("%0.2lf, %0.2lf, %0.2lf\n", maxBetweenness, wtime_taken, time_taken);
+  // printf("%0.2lf, ", maxBetweenness);
+  // printf("%0.2lf, ", time_taken);
+  printf("%0.2lf \n", wtime_taken);
 
   if (argc == 3) {
     freopen(argv[2], "w", stdout);
