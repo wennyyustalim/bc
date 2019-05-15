@@ -104,20 +104,23 @@ double *betweennessCentrality(Graph *graph, int nodeFrom, int nodeTo) {
 
 int main(int argc, char *argv[]) {
   if (argc < 3) {
-    cout << "Usage: " << argv[0] << " <input_file> <output_file> <node_from> <node_to>\n";
+    cout << "Usage: " << argv[0] << " <input_file> <output_file> <threshold>\n";
     return 0;
   }
 
   freopen(argv[1], "r", stdin);
-
-  const int nodeFrom = atoi(argv[3]);
-  const int nodeTo = atoi(argv[4]);
 
   Graph *graph = new Graph();
   graph->readGraph();
 
   int nodeCount = graph->getNodeCount();
   int edgeCount = graph->getEdgeCount();
+
+  // Set threshold
+  const long threshold_percent = strtol(argv[3], NULL, 10);
+  const int threshold = (int) ((float)nodeCount * (float)threshold_percent / (float) 100);
+  const int nodeFrom = 0;
+  const int nodeTo = threshold - 1;
 
   clock_t start, end;
   double wstart, wend;

@@ -32,7 +32,8 @@ inline void gpuAssert(cudaError_t error, const char *file, int line, bool abort 
   }
 }
 
-__global__ void betweennessCentralityKernel(Graph *graph, float *bwCentrality, int nodeCount,
+__global__ void betweennessCentralityKernel(Graph *graph, float *bwCentrality, 
+                                            int nodeFrom, int nodeTo, int nodeCount,
                                             int *sigma, int *distance, float *dependency) {
   int idx = threadIdx.x;
   if (idx >= max((2*(graph->edgeCount)), nodeCount))
@@ -43,11 +44,11 @@ __global__ void betweennessCentralityKernel(Graph *graph, float *bwCentrality, i
   __shared__ bool done;
 
   if (idx == 0) {
-    s = -1;
+    s = nodeFrom - 1;
   }
   __syncthreads();
 
-  while (s < nodeCount - 1) {
+  while (s <= nodeTo) {
     if (idx == 0) {
         ++s;
         done = false;
@@ -123,7 +124,7 @@ __global__ void betweennessCentralityKernel(Graph *graph, float *bwCentrality, i
   }
 }
 
-float *betweennessCentrality(Graph *graph, int nodeCount) {
+float *betweennessCentrality(Graph *graph, int nodeCount, int nodeFrom, int nodeTo) {
   float *bwCentrality = new float[nodeCount]();
   float *device_bwCentrality, *dependency;
   int *sigma, *distance;
@@ -139,7 +140,16 @@ float *betweennessCentrality(Graph *graph, int nodeCount) {
   catchCudaError(cudaEventCreate(&device_end));
   catchCudaError(cudaEventRecord(device_start));
 
-  betweennessCentralityKernel<<<1, MAX_THREAD_COUNT>>>(graph, device_bwCentrality, nodeCount, sigma, distance, dependency);
+  betweennessCentralityKernel<<<1, MAX_THREAD_COUNT>>>(
+    graph,
+    device_bwCentrality,
+    nodeFrom,
+    nodeTo,
+    nodeCount,
+    sigma,
+    distance,
+    dependency
+  );
   cudaDeviceSynchronize();
   
   // Timer
@@ -176,6 +186,12 @@ int main(int argc, char *argv[]) {
   int edgeCount = host_graph->getEdgeCount();
   catchCudaError(cudaMemcpy(device_graph, host_graph, sizeof(Graph), cudaMemcpyHostToDevice));
 
+  // Set threshold
+  const long threshold_percent = strtol(argv[3], NULL, 10);
+  const int threshold = (int) ((float)nodeCount * (float)threshold_percent / (float) 100);
+  const int nodeFrom = threshold;
+  const int nodeTo = nodeCount - 1;
+
   // Copy edge List to device
   int *edgeList1;
   int *edgeList2;
@@ -191,7 +207,7 @@ int main(int argc, char *argv[]) {
   catchCudaError(cudaMemcpy(&(device_graph->edgeList1), &edgeList1, sizeof(int *), cudaMemcpyHostToDevice));
   catchCudaError(cudaMemcpy(&(device_graph->edgeList2), &edgeList2, sizeof(int *), cudaMemcpyHostToDevice));
 
-  float *bwCentrality = betweennessCentrality(device_graph, nodeCount);
+  float *bwCentrality = betweennessCentrality(device_graph, nodeCount, nodeFrom, nodeTo);
 
   float maxBetweenness = -1;
   for (int i = 0; i < nodeCount; i++) {
