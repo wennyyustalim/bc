@@ -12,14 +12,13 @@ using namespace std;
 float device_time_taken;
 
 void printTime(float ms) {
-  int h = ms / (1000 * 3600);
-  int m = (((int)ms) / (1000 * 60)) % 60;
-  int s = (((int)ms) / 1000) % 60;
-  int intMS = ms;
-  intMS %= 1000;
-
-  printf("Time Taken (Parallel) = %dh %dm %ds %dms\n", h, m, s, intMS);
-  printf("Time Taken in milliseconds : %d\n", (int)ms);
+  // int h = ms / (1000 * 3600);
+  // int m = (((int)ms) / (1000 * 60)) % 60;
+  // int s = (((int)ms) / 1000) % 60;
+  // int intMS = ms;
+  // intMS %= 1000;
+  // printf("Time Taken (Parallel) = %dh %dm %ds %dms\n", h, m, s, intMS);
+  printf("%d,", (int)ms);
 }
 
 inline void gpuAssert(cudaError_t error, const char *file, int line, bool abort = false) {
@@ -217,8 +216,7 @@ int main(int argc, char *argv[]) {
   cout << endl;
 
   printf("%s, %s,", argv[1], argv[3]);
-  printf("%0.2lf, ", maxBetweenness);
-  printTime(device_time_taken);
+  printf("%0.2lf, %0.2lf\n", maxBetweenness, device_time_taken);
 
   if (argc == 3) {
     freopen(argv[2], "w", stdout);

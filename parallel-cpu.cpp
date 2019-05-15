@@ -141,7 +141,8 @@ int main(int argc, char *argv[]) {
     maxBetweenness = max(maxBetweenness, bwCentrality[i]);
   }
 
-  printf("%lf %lf %lf\n", maxBetweenness, wtime_taken, time_taken);
+  printf("%s, %s, ", argv[1], argv[3]);
+  printf("%0.2lf, %0.2lf, %0.2lf\n", maxBetweenness, wtime_taken, time_taken);
 
   if (argc == 3) {
     freopen(argv[2], "w", stdout);
