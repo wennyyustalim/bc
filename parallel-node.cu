@@ -11,14 +11,7 @@ using namespace std;
 float device_time_taken;
 
 void printTime(float ms) {
-  int h = ms / (1000*3600);
-  int m = (((int)ms) / (1000*60)) % 60;
-  int s = (((int)ms) / 1000) % 60;
-  int intMS = ms;
-  intMS %= 1000;
-
-  printf("Time Taken (Parallel) = %dh %dm %ds %dms\n", h, m, s, intMS);
-  printf("Time Taken in milliseconds : %d\n", (int)ms);
+  printf("%d,", (int)ms);
 }
 
 inline void gpuAssert(cudaError_t error, const char *file, int line,  bool abort = false) {
@@ -192,10 +185,9 @@ int main(int argc, char *argv[]) {
     maxBetweenness = max(maxBetweenness, bwCentrality[i]);
   }
 
-  cout << endl;
-
-  printf("\nMaximum Betweenness Centrality ==> %0.2lf\n", maxBetweenness);
-  printTime(device_time_taken);
+  printf("%s, %03d, ", argv[1], atoi(argv[3]));
+  // printf("%0.2lf, ", maxBetweenness);
+  printf("%0.2lf\n", device_time_taken);
 
   if (argc == 3) {
     freopen(argv[2], "w", stdout);

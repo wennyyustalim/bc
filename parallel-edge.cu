@@ -4,20 +4,13 @@
 
 #define MAX_THREAD_COUNT 1024
 #define CEIL(a, b) ((a - 1) / b + 1)
+#define catchCudaError(error) { gpuAssert((error), __FILE__, __LINE__); }
 
 using namespace std;
-
-#define catchCudaError(error) { gpuAssert((error), __FILE__, __LINE__); }
 
 float device_time_taken;
 
 void printTime(float ms) {
-  // int h = ms / (1000 * 3600);
-  // int m = (((int)ms) / (1000 * 60)) % 60;
-  // int s = (((int)ms) / 1000) % 60;
-  // int intMS = ms;
-  // intMS %= 1000;
-  // printf("Time Taken (Parallel) = %dh %dm %ds %dms\n", h, m, s, intMS);
   printf("%d,", (int)ms);
 }
 

@@ -14,11 +14,6 @@ using namespace std;
 float device_time_taken;
 
 void printTime(float ms) {
-  // int h = ms / (1000 * 3600);
-  // int m = (((int)ms) / (1000 * 60)) % 60;
-  // int s = (((int)ms) / 1000) % 60;
-  // int intMS = ms;
-  // intMS %= 1000;
   printf("%d,", (int)ms);
 }
 
