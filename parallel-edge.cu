@@ -10,10 +10,6 @@ using namespace std;
 
 float device_time_taken;
 
-void printTime(float ms) {
-  printf("%d,", (int)ms);
-}
-
 inline void gpuAssert(cudaError_t error, const char *file, int line, bool abort = false) {
   if (error != cudaSuccess) {
     printf("\n====== Cuda Error Code %i ======\n %s", error, cudaGetErrorString(error));

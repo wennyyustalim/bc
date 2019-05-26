@@ -2,17 +2,6 @@
 #include "Graph.h"
 using namespace std;
 
-void printTime(float ms) {
-  int h = ms / (1000 * 3600);
-  int m = (((int)ms) / (1000 * 60)) % 60;
-  int s = (((int)ms) / 1000) % 60;
-  int intMS = ms;
-  intMS %= 1000;
-
-  printf("Time Taken (Serial) = %dh %dm %ds %dms\n", h, m, s, intMS);
-  printf("Time Taken in milliseconds : %d\n", (int)ms);
-}
-
 double *betweennessCentrality(Graph *graph, int nodeFrom, int nodeTo) {
   const int nodeCount = graph->getNodeCount();
   const int edgeCount = graph->getEdgeCount();
