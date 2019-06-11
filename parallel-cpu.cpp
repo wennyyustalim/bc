@@ -34,6 +34,7 @@ double *betweennessCentrality(Graph *graph, int nodeFrom, int nodeTo) {
 
     #pragma omp for schedule(dynamic, 4)
     for (int s = nodeFrom; s <= nodeTo; s++) {
+      // Forward Propagation
       for (int i = 0; i < nodeCount; ++i) {
         predecessor[i].clear();
       }
@@ -58,7 +59,7 @@ double *betweennessCentrality(Graph *graph, int nodeFrom, int nodeTo) {
             distance[w] = distance[v] + 1;
           }
 
-          // If shortest path to w from s goes through v
+          // Path Counting
           if (distance[w] == distance[v] + 1) {
             sigma[w] += sigma[v];
             predecessor[w].push_back(v);

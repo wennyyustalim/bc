@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cuda.h>
-#include <stdlib.h>  // for strtol
+#include <stdlib.h> // for strtol
 #include "Graph.h"
 #include <omp.h>
 
@@ -114,7 +114,6 @@ __global__ void betweennessCentralityKernel(Graph *graph, float *bwCentrality,
 
         for (int v = idx; v < nodeCount; v += blockDim.x) {
             if (v != s) {
-                // Each shortest path is counted twice. So, each partial shortest path dependency is halved.
                 bwCentrality[v] += dependency[v] / 2;
             }
         }
